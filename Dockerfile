@@ -10,7 +10,7 @@ RUN apk add --no-cache --update \
     && \
     rm  -rf /tmp/* /var/cache/apk/*
 
-RUN  git clone https://github.com/DragonCrafted87/playit-agent.git
+RUN  git clone -b v0.9.3 --single-branch https://github.com/playit-cloud/playit-agent.git
 
 WORKDIR /usr/src/playit-agent
 RUN   git reset --hard 18e692e513437c792c4b56977b72db33342a22c4 \
