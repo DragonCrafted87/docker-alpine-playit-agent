@@ -65,4 +65,4 @@ USER docker
 COPY --from=builder /usr/src/playit-agent/target/release/playit-cli /home/docker/playit-agent
 WORKDIR /home/docker
 
-ENTRYPOINT ["/home/docker/playit-agent", "--config-file", "playit.toml", "--stdout-logs"]
+ENTRYPOINT ["/home/docker/playit-agent", "--stdout"]
