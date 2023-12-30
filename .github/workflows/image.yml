@@ -20,7 +20,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - id: docker_username
-      uses: Entepotenz/change-string-case-action@v1
+      uses: step-security/change-string-case-action@v1
       with:
         string: ${{github.repository_owner}}
     - name: Docker meta
