@@ -14,21 +14,8 @@ on:
     - v*
 
 jobs:
-  variables:
-    outputs:
-      username_lowered: ${{ steps.var.outputs.username_lowered}}
-    runs-on: ubuntu-latest
-    steps:
-    - name: Setting global variables
-      uses: actions/github-script@v6
-      id: var
-      with:
-        script: |
-          core.setOutput('username_lowered', '${{ github.repository_owner }}'.toLowerCase());
   build:
     runs-on: ubuntu-latest
-    env:
-      USERNAME_LOWERED: ${{ needs.variables.outputs.username_lowered }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -37,7 +24,7 @@ jobs:
       uses: docker/metadata-action@v5
       with:
         images: |
-          ${{ env.USERNAME_LOWERED }}/alpine-playit-agent
+          ${{ github.repository_owner,, }}/alpine-playit-agent
           ghcr.io/${{ github.repository_owner }}/alpine-playit-agent
         tags: |
           type=edge,branch=main
@@ -52,7 +39,7 @@ jobs:
       if: github.event_name != 'pull_request'
       uses: docker/login-action@v3
       with:
-        username: ${{ env.USERNAME_LOWERED }}
+        username: ${{ github.repository_owner,, }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Login to GHCR
       if: github.event_name != 'pull_request'
