@@ -19,16 +19,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-    - name: downcase REPO
-      run: |
-        echo "DOCKER_USERNAME=${github.repository_owner,,}" >> ${GITHUB_ENV}
+    - id: docker_username
+      uses: Entepotenz/change-string-case-action@v1
+      with:
+        string: ${{github.repository_owner}}
     - name: Docker meta
       id: meta
       uses: docker/metadata-action@v5
       with:
         images: |
-          ${DOCKER_USERNAME}/alpine-playit-agent
-          ghcr.io/${DOCKER_USERNAME}/alpine-playit-agent
+          ${{ steps.docker_username.outputs.lowercase }}/alpine-playit-agent
+          ghcr.io/${{ steps.docker_username.outputs.lowercase }}/alpine-playit-agent
         tags: |
           type=edge,branch=main
           type=schedule,pattern={{date 'YYYY[w]WW[d]]d'}}
@@ -42,7 +43,7 @@ jobs:
       if: github.event_name != 'pull_request'
       uses: docker/login-action@v3
       with:
-        username: ${DOCKER_USERNAME}
+        username: ${{ steps.docker_username.outputs.lowercase }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Login to GHCR
       if: github.event_name != 'pull_request'
