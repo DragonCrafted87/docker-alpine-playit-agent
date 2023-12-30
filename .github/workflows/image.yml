@@ -24,7 +24,7 @@ jobs:
       id: var
       with:
         script: |
-          core.setOutput('username_lowered', '${{ github.repository_owner }}'.toLowerCase();
+          core.setOutput('username_lowered', '${{ github.repository_owner }}'.toLowerCase());
   build:
     runs-on: ubuntu-latest
     env:
