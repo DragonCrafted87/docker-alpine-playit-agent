@@ -19,7 +19,7 @@ eot
 WORKDIR /usr/src/playit-agent
 
 RUN ash <<eot
-    cargo build --release --bin=playit-cli
+    cargo build --release --bin=playit-cli --jobs 1
 eot
 
 FROM alpine:3.19
@@ -36,6 +36,9 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.schema-version="1.0"
 
 RUN ash <<eot
+    set -e
+
+    apk upgrade
     apk add --no-cache --update \
         libgcc \
 
@@ -48,6 +51,8 @@ ARG UID=1000
 ARG GID=1000
 
 RUN ash <<eot
+    set -e
+
     addgroup \
         --gid "$GID" \
         --system "$USER"
